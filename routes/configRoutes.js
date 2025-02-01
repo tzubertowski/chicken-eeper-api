@@ -1,7 +1,7 @@
 // routes/configRoutes.js
 const OAuth2Server = require('oauth2-server');
-const oauthModel = require('../oauthModel'); // updated path
-const Config = require('../models/config');
+const oauthModel = require('../oauthModel'); // your OAuth model
+const Config = require('../models/config'); // your Sequelize config model
 
 function registerConfigRoutes(server) {
   const oauth = new OAuth2Server({
@@ -10,21 +10,18 @@ function registerConfigRoutes(server) {
     allowBearerTokensInQueryString: true,
   });
 
-  // PUT /config: Create or update the global configuration.
+  // PUT /config remains unchanged...
   server.put('/config', async (req, res) => {
     try {
-      // Authenticate the request; only logged-in users may update config.
       const request = new OAuth2Server.Request(req);
       const response = new OAuth2Server.Response(res);
       await oauth.authenticate(request, response);
       
-      // Extract configuration fields from the request body.
       const { openingHours, closingHours, expectedChickenCount } = req.body;
       if (!openingHours || !closingHours || expectedChickenCount === undefined) {
         return res.send(400, { error: 'Missing configuration fields' });
       }
 
-      // Since this is a global configuration, we assume there is a single record.
       let config = await Config.findOne();
       if (config) {
         config.openingHours = openingHours;
@@ -41,10 +38,9 @@ function registerConfigRoutes(server) {
     }
   });
 
-  // GET /config: Retrieve the global configuration.
+  // Updated GET /config endpoint
   server.get('/config', async (req, res) => {
     try {
-      // Authenticate the request.
       const request = new OAuth2Server.Request(req);
       const response = new OAuth2Server.Response(res);
       await oauth.authenticate(request, response);
@@ -53,7 +49,12 @@ function registerConfigRoutes(server) {
       if (config) {
         res.send(config);
       } else {
-        res.send(404, { error: 'Configuration not found' });
+        // Return an empty configuration if none is found.
+        res.send({
+          openingHours: "",
+          closingHours: "",
+          expectedChickenCount: 0
+        });
       }
     } catch (error) {
       console.error('Error in GET /config:', error);

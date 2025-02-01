@@ -17,7 +17,6 @@ const oauthModel = {
 
   // Retrieve client credentials. For testing, accept client 'client' and secret 'secret'
   getClient: async function(clientId, clientSecret) {
-    console.log('getClient called with:', { clientId, clientSecret });
     if (clientId === 'client' && clientSecret === 'secret') {
       return { id: 'client', grants: ['password'] };
     }

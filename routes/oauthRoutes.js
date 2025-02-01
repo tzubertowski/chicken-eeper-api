@@ -1,6 +1,7 @@
 // routes/oauthRoutes.js
 const OAuth2Server = require('oauth2-server');
-const oauthModel = require('../oauthModel');
+const oauthModel = require('../oauthModel'); // Your renamed OAuth model file
+const CustomOAuthRequest = require('../customOAuthRequest');
 
 function registerOauthRoutes(server) {
   const oauth = new OAuth2Server({
@@ -9,10 +10,10 @@ function registerOauthRoutes(server) {
     allowBearerTokensInQueryString: true,
   });
 
-  // POST /oauth/token: Issue an access token
+  // POST /oauth/token: Issue an access token.
   server.post('/oauth/token', async (req, res) => {
-    console.log('Request body:', req.body);
-    const request = new OAuth2Server.Request(req);
+    // Create a custom OAuth request that supports JSON
+    const request = new CustomOAuthRequest(req);
     const response = new OAuth2Server.Response(res);
     try {
       const token = await oauth.token(request, response);

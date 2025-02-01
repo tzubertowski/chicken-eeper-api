@@ -1,20 +1,19 @@
 {
-    "name": "node-restify-oauth-mysql",
-    "version": "1.0.0",
-    "description": "Node.js API z Restify, OAuth2, MySQL i Docker Compose",
-    "main": "index.js",
-    "dependencies": {
-      "restify": "^11.1.0",
-      "oauth2-server": "^3.1.1",
-      "mysql2": "^3.1.0",
-      "sequelize": "^6.31.0"
-    },
-    "devDependencies": {
-      "nodemon": "^2.0.20"
-    },
-    "scripts": {
-      "start": "node index.js",
-      "dev": "nodemon --legacy-watch index.js"
-    }
+  "name": "node-restify-oauth-mysql",
+  "version": "1.0.0",
+  "description": "Node.js API z Restify, OAuth2, MySQL i Docker Compose",
+  "main": "index.js",
+  "dependencies": {
+    "mysql2": "^3.1.0",
+    "oauth2-server": "^3.1.1",
+    "restify": "^11.1.0",
+    "sequelize": "^6.37.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --legacy-watch index.js"
   }
-  
+}
