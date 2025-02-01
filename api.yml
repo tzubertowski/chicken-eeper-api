@@ -1,0 +1,174 @@
+openapi: 3.0.3
+info:
+  title: Chicken-Eeper API
+  version: "1.0.0"
+  description: >
+    API for automated chicken coop door configuration. This API provides an OAuth token endpoint
+    and endpoints for updating and retrieving global configuration settings (openingHours, closingHours, expectedChickenCount).
+servers:
+  - url: http://localhost:3000
+paths:
+  /oauth/token:
+    post:
+      summary: Obtain an OAuth 2.0 Access Token
+      description: >
+        Issues an access token using the password grant. Although the OAuth 2.0 spec requires form‑encoded
+        parameters, the API accepts JSON requests.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  example: password
+                username:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: yourpassword
+                client_id:
+                  type: string
+                  example: client
+                client_secret:
+                  type: string
+                  example: secret
+              required:
+                - grant_type
+                - username
+                - password
+                - client_id
+                - client_secret
+      responses:
+        '200':
+          description: Token successfully issued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+        '400':
+          description: Invalid request or client credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /config:
+    put:
+      summary: Update Global Configuration
+      description: >
+        Creates or updates the global configuration for the chicken-eeper project.
+        This endpoint is protected by OAuth and requires a valid bearer token.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                openingHours:
+                  type: string
+                  example: "06:00"
+                closingHours:
+                  type: string
+                  example: "20:00"
+                expectedChickenCount:
+                  type: integer
+                  example: 10
+              required:
+                - openingHours
+                - closingHours
+                - expectedChickenCount
+      responses:
+        '200':
+          description: Configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'
+        '400':
+          description: Missing or invalid configuration fields
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Retrieve Global Configuration
+      description: >
+        Returns the global configuration settings. This endpoint is protected by OAuth and requires a valid bearer token.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'
+        '404':
+          description: Configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Config:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        openingHours:
+          type: string
+          example: "06:00"
+        closingHours:
+          type: string
+          example: "20:00"
+        expectedChickenCount:
+          type: integer
+          example: 10
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-02-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2025-02-01T12:00:00Z"
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid request: missing configuration fields"
