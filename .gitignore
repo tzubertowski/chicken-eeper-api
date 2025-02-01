@@ -1,0 +1,21 @@
+# Node modules folder should not be committed
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files (if you have one for local secrets)
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional: build output folder
+dist/
+
+# Optional: temporary files
+*.tmp
