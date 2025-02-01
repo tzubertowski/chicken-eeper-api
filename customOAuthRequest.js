@@ -1,4 +1,3 @@
-// customOAuthRequest.js
 const { Request } = require('oauth2-server');
 
 class CustomOAuthRequest extends Request {

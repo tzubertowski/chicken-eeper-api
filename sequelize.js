@@ -1,4 +1,3 @@
-// sequelize.js
 const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(
@@ -8,7 +7,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.MYSQL_HOST || 'mysql',
     dialect: 'mysql',
-    logging: false, // disable logging if you prefer
+    logging: false,
   }
 );
 

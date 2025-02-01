@@ -1,5 +1,4 @@
-// oauthModel.js
-const db = require('./db'); // or any database helper you use
+const db = require('./db');
 
 const oauthModel = {
   // Retrieve an access token from the database

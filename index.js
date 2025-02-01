@@ -1,4 +1,3 @@
-// index.js
 const restify = require('restify');
 const registerOauthRoutes = require('./routes/oauthRoutes');
 const registerConfigRoutes = require('./routes/configRoutes'); // if you have config routes
